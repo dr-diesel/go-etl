@@ -36,7 +36,7 @@ func processMessageHttpWorker(cchan <-chan AppMessage, k2chan chan<- kafka.Messa
 	log.Println("Running worker processMessageHttp")
 	//conn.Exec(context.Background(), "TRUNCATE example")
 
-	ticker := time.NewTicker(10 * time.Second)
+	ticker := time.NewTicker(9 * time.Second)
 
 	buffer := make([]AppMessage, 0)
 
