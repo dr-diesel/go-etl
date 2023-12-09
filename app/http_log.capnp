@@ -1,4 +1,7 @@
+using Go = import "/go.capnp";
 @0xf42cd342ff520eca;
+$Go.package("http_log_schema");
+$Go.import("g.o/~/anonymizer/cmd/myreader/http_log_schema");
 
 struct HttpLogRecord {
   timestampEpochMilli @0 :UInt64;
