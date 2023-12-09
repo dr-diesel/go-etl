@@ -97,7 +97,7 @@ services:
       - broker
 
   clickhouse-server:
-    image: yandex/clickhouse-server
+    build: docker/clickhouse
     ports:
       - "8123:8123"
       - "9000:9000"
