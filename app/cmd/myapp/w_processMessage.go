@@ -42,6 +42,7 @@ func zeroLastOctet(ip net.IP) net.IP {
 }
 
 func processMessageWorker(cchan <-chan AppMessage, k2chan chan<- kafka.Message) {
+	log.Println("Running worker processMessage...")
 	fmt.Println("Connecting ClickHouse...")
 	ctx := context.Background()
 	conn, err := clickhouse.Open(&clickhouse.Options{

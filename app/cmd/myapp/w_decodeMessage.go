@@ -10,6 +10,7 @@ import (
 )
 
 func decodeMessageWorker(kchan <-chan kafka.Message, cchan chan<- AppMessage) {
+	log.Println("Running worker decodeKafka...")
 	for m := range kchan {
 		log.Print("Decoding message:...")
 

@@ -31,10 +31,9 @@ func (s *loggingTransport) RoundTrip(r *http.Request) (*http.Response, error) {
 }
 
 func processMessageHttpWorker(cchan <-chan AppMessage, k2chan chan<- kafka.Message) {
-	var totalSent int
+	log.Println("Running worker processMessageHttp...")
 
-	log.Println("Running worker processMessageHttp")
-	//conn.Exec(context.Background(), "TRUNCATE example")
+	var totalSent int
 
 	ticker := time.NewTicker(9 * time.Second)
 
