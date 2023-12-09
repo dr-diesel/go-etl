@@ -71,7 +71,7 @@ func main() {
 	wg.Add(1)
 	go func() {
 		defer wg.Done()
-		processMessageWorker(cchan, k2chan)
+		processMessageHttpWorker(cchan, k2chan)
 		close(k2chan)
 	}()
 
