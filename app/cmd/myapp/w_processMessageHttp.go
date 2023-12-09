@@ -24,7 +24,6 @@ func (s *loggingTransport) RoundTrip(r *http.Request) (*http.Response, error) {
 	// err is returned after dumping the response
 
 	respBytes, _ := httputil.DumpResponse(resp, true)
-	//bytes = append(bytes, respBytes...)
 	fmt.Printf("%s\n", respBytes)
 
 	return resp, err
@@ -41,14 +40,6 @@ func processMessageHttpWorker(cchan <-chan AppMessage, k2chan chan<- kafka.Messa
 
 	commitStash := make(kafkaCommitStash, 0)
 
-	/*
-		chansend := make(chan []AppMessage)
-		go httpSender(chansend)
-		defer close(chansend)
-	*/
-
-	// Create a writer that caches compressors.
-	// For this operation type we supply a nil Reader.
 	var zencoder, _ = zstd.NewWriter(nil)
 
 	for {
@@ -63,20 +54,19 @@ func processMessageHttpWorker(cchan <-chan AppMessage, k2chan chan<- kafka.Messa
 				commitStash.merge(commit)
 
 			} else {
-				//closed input channel - breaking - TODO wait for 1min or close uncommitted kafka messages
+				// closed input channel - breaking
 				return
 			}
 		case <-ticker.C:
 			{
 				r := len(buffer)
-				fmt.Println("CLICKHOUSE FLUSHING TO HTTP...")
+				fmt.Println("CLICKHOUSE FLUSHING TO HTTP...", r, "item(s)")
 				if r > 0 {
 
 					respCode := func() int {
-						clickHouseURL := "http://127.0.0.1:8124/" // URL for ClickHouse server
-						tableName := "http_log"                   // Replace with your table name
+						clickHouseURL := "http://127.0.0.1:8124/"
+						tableName := "http_log"
 
-						// Build the URL for the ClickHouse INSERT query
 						p := url.Values{}
 						p.Add("query", fmt.Sprintf("INSERT INTO %s (timestamp, resource_id, bytes_sent, request_time_milli, response_status, cache_status, method, remote_addr, url) FORMAT TSVRaw", tableName))
 
@@ -133,23 +123,13 @@ func processMessageHttpWorker(cchan <-chan AppMessage, k2chan chan<- kafka.Messa
 					}
 
 				} else {
-					log.Println("norows")
+					fmt.Println("CLICKHOUSE no rows")
 				}
 			}
 
 		}
 	}
 }
-
-/*
-func httpSender(c <-chan []AppMessage) {
-	for buffer := range c {
-		for _, m := range buffer {
-			fmt.Println(m.DecodedMessage)
-		}
-	}
-}
-*/
 
 func getTsvData(buffer []AppMessage) []byte {
 

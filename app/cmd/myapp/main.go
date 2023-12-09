@@ -48,7 +48,6 @@ func main() {
 		Topic:   topic,
 		GroupID: "anonymizer5",
 		//Partition: 0,
-		// Add more configuration as needed
 	})
 	ctx, cancel := context.WithCancel(context.Background())
 	ctxc, cancelc := context.WithCancel(context.Background())

@@ -98,7 +98,6 @@ func decodeMessageWorker(kchan <-chan kafka.Message, cchan chan<- AppMessage) {
 			KafkaMessage:   m,
 			DecodedMessage: dmsg,
 		}
-		//log.Print(m)
 		log.Println("...done")
 	}
 }

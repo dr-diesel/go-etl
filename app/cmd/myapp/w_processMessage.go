@@ -113,7 +113,7 @@ func processMessageWorker(cchan <-chan AppMessage, k2chan chan<- kafka.Message) 
 				commitStash.merge(commit)
 
 			} else {
-				//closed input channel - breaking - TODO wait for 1min or close uncommitted kafka messages
+				//closed input channel - breaking
 				return
 			}
 		case <-ticker.C:
