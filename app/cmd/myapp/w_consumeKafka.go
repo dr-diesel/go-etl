@@ -19,11 +19,11 @@ func consumeKafkaWorker(r *kafka.Reader, ctx context.Context, kchan chan<- kafka
 			} else {
 				log.Printf("Error reading message: %v\n", err)
 			}
-			return
+		} else {
+			log.Printf("Received message: %s (%d:%d)\n", msg.Topic, msg.Partition, msg.Offset)
+			kchan <- msg
+			log.Printf("...sent message: %s (%d:%d)\n", msg.Topic, msg.Partition, msg.Offset)
 		}
-		log.Printf("Received message: %s (%d:%d)\n", msg.Topic, msg.Partition, msg.Offset)
-		kchan <- msg
-		log.Printf("...sent message: %s (%d:%d)\n", msg.Topic, msg.Partition, msg.Offset)
 
 	}
 }
